@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:peliculas/models/models.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +37,7 @@ List<Movie> onDisplayMovies=[];
     print(nowPlayingResponse.results[1].title);
 
     onDisplayMovies = nowPlayingResponse.results;
+
     notifyListeners();
   }
 }
