@@ -21,8 +21,8 @@ class DetailsScreen extends StatelessWidget {
               _PosterAndTitle(),
 
               const _Overview(),
-              _Overview(),
-              _Overview(),
+              const _Overview(),
+              const _Overview(),
               
 
               const CastingCards(),
@@ -122,7 +122,7 @@ class _Overview extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
       child:Text('Ipsum velit ex elit esse velit magna cillum quis ullamco in eu sit adipisicing fugiat. Aliqua minim cupidatat qui sunt magna aute. Nostrud elit velit commodo officia anim magna consequat. Id exercitation ea Lorem officia. Anim non ullamco reprehenderit proident dolore tempor eiusmod dolor nulla.',
                     textAlign: TextAlign.justify,
-                    style: TextTheme().subtitle1,
+                    style: const TextTheme().subtitle1,
                     )
     );
   }

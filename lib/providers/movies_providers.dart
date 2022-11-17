@@ -13,7 +13,7 @@ final String _baseUrl='api.themoviedb.org';
 List<Movie> onDisplayMovies=[];
 
   MoviesProvider(){
-    this.getOnDisplayMovies();
+    getOnDisplayMovies();
 
   }
 
