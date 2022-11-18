@@ -1,25 +1,31 @@
 
 import 'package:flutter/material.dart';
 
+import '../models/movie.dart';
+
 //imageCache.clear()
-
-void main() => runApp(const MovieSlider());
-
 class MovieSlider extends StatelessWidget {
-  const MovieSlider({super.key});
+
+  final List movies;
+  final String? title;
+
+  const MovieSlider({super.key, required this.movies, this.title});
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       width: double.infinity,
       height: 300,
       color: Colors.amber,
+
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
+          if(title != null)
+           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Text('Populares',style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
+            child: Text(title!, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
             ),
 
            const SizedBox(height: 5),  
@@ -27,10 +33,8 @@ class MovieSlider extends StatelessWidget {
           Expanded(
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: 20,
-              itemBuilder: ( __ , int index) {
-                return _MoviePoster();
-              },
+              itemCount: movies.length,
+              itemBuilder: ( __ , int index) =>  _MoviePoster(movies[index])
             ),
           ),
         ],
@@ -40,6 +44,10 @@ class MovieSlider extends StatelessWidget {
 }
 
 class _MoviePoster extends StatelessWidget{
+
+  final Movie movie;
+
+   const _MoviePoster(this.movie);
 
 @override
 Widget build (BuildContext context){
@@ -55,9 +63,9 @@ Widget build (BuildContext context){
           onTap: () => Navigator.pushNamed(context, 'details', arguments: 'movie-instance'),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20),
-            child:const FadeInImage(
+            child: FadeInImage(
               placeholder: AssetImage('assets/no-image.jpg'), 
-              image: AssetImage('assets/no-image.jpg'),
+              image: NetworkImage(movie.fullPosterImg),
               width: 130,
               height: 150,
               fit: BoxFit.cover,
@@ -67,8 +75,8 @@ Widget build (BuildContext context){
 
           const SizedBox(height: 5),
 
-          const Text(
-            'Starwars: El retorno del nuevo jedi',
+           Text(
+            movie.title,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
