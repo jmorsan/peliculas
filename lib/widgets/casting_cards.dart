@@ -1,30 +1,49 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:peliculas/models/credits_responses.dart';
+import 'package:provider/provider.dart';
+import '../providers/movies_providers.dart';
 
 class CastingCards extends StatelessWidget {
-   
-  const CastingCards({Key? key}) : super(key: key);
-  
+  final int movieId;
+
+  const CastingCards(this.movieId);
+
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    final moviesProvider = Provider.of<MoviesProvider>(context, listen: false);
 
-      margin: const EdgeInsets.only(bottom: 30),
-      color: Colors.red,
-      height: 180,
-      width: double.infinity,
+    return FutureBuilder(
+      future: moviesProvider.getMovieCast(movieId),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (!snapshot.hasData) {
+          return Container(
+            constraints: BoxConstraints(maxWidth: 300),
+            height: 150,
+            child: CupertinoActivityIndicator(),
+          );
+        }
 
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: 10,
-        itemBuilder: ( __, int index) =>const _CastCard() ,
-      ),
-      
+        final List<Cast> cast = snapshot.data!;
+
+        return Container(
+          margin: const EdgeInsets.only(bottom: 30),
+          height: 180,
+          width: double.infinity,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: cast.length,
+            itemBuilder: (__, int index) => _CastCard(cast[index]),
+          ),
+        );
+      },
     );
   }
 }
 
 class _CastCard extends StatelessWidget {
-  const _CastCard({super.key});
+  final Cast actor;
+
+  const _CastCard(this.actor);
 
   @override
   Widget build(BuildContext context) {
@@ -32,28 +51,25 @@ class _CastCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 10),
       width: 110,
       height: 100,
-      color: Colors.green,
-      child:  Column(
+      child: Column(
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(20),
-            child: const FadeInImage(
-                      placeholder: AssetImage('assets/no-image.jpg'),
-                      image: AssetImage('assets/no-image.jpg'),
-                      height: 140,
-                      width: 100,
-                      fit: BoxFit.cover,
-                    ),
+            child: FadeInImage(
+              placeholder: const AssetImage('assets/no-image.jpg'),
+              image: NetworkImage(actor.fullProfilePath),
+              height: 140,
+              width: 100,
+              fit: BoxFit.cover,
+            ),
           ),
-
-          //const SizedBox(height: 5),
-
-          const Text(
-            'actor.name asdadad asdads asdad',
+          const SizedBox(height: 5),
+          Text(
+            actor.name,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
-            )
+          )
         ],
       ),
     );
