@@ -50,7 +50,7 @@ class _CustomAppBar extends StatelessWidget {
           child: Text(
             movie.title,
             style: const TextStyle(fontSize: 16),
-            textAlign: TextAlign.center,
+            textAlign: TextAlign.right,
           ),
         ),
         background: FadeInImage(
